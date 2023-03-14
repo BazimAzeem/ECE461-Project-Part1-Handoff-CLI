@@ -83,7 +83,7 @@ function logInfo() {
 
     if [ $loglevel -gt 0 ] 
     then
-    echo "[BUILD|Priority: 1(info)] $1" | tee -a $logfullpath cache/build.txt >/dev/null
+    echo "[BUILD|Priority: 1(info)] "$1"" | tee -a "$logfullpath" cache/build.txt >/dev/null
     fi
 }
 
@@ -93,7 +93,7 @@ function logDebug() {
 
     if [ $loglevel -gt 1 ] 
     then
-    echo "[BUILD|Priority: 2(debug)] $1" | tee -a $logfullpath cache/build.txt >/dev/null
+    echo "[BUILD|Priority: 2(debug)] "$1"" | tee -a "$logfullpath" cache/build.txt >/dev/null
     fi
 }
 
@@ -123,17 +123,17 @@ case "$1" in
         # build function code here
         #check if loglevel is greater than 0
         logDebug "Building C# CLI Parser"
-        dotnet publish source/CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
+        dotnet publish source/CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a "$logfullpath" cache/build.txt >/dev/null
         cp source/CLIParseProj/bin/Debug/net6.0/linux-x64/publish/CLIParse .
         logDebug "C# CLI Parser built"
 
         logDebug "Building NPM API Caller"
-        dotnet publish source/RestIntProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
+        dotnet publish source/RestIntProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a "$logfullpath" cache/build.txt >/dev/null
         cp source/RestIntProj/bin/Debug/net6.0/linux-x64/publish/RestInt .
         logDebug "NPM API Caller built"
 
         logDebug "Building Static Analysis C#"
-        dotnet publish source/StaticAnalysisTesterProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
+        dotnet publish source/StaticAnalysisTesterProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a "$logfullpath" cache/build.txt >/dev/null
         cp source/StaticAnalysisTesterProj/bin/Debug/net6.0/linux-x64/publish/StaticAnalysisTester .
         logDebug "Static Analysis C# built"
         
@@ -160,7 +160,7 @@ case "$1" in
         cd UnitTest/
         rm -rf TestResults
         touch ../results/csharptests.txt
-        dotnet test --collect:"XPlat Code Coverage" | tee -a $logfullpath ../results/csharptests.txt >/dev/null
+        dotnet test --collect:"XPlat Code Coverage" | tee -a "$logfullpath" ../results/csharptests.txt >/dev/null
         cp TestResults/**/*.xml .
         cd ..
         
@@ -198,17 +198,17 @@ case "$1" in
 
         logInfo "Installing c# Dependencies with dotnet"
         cd source/CLIParseProj
-        dotnet add package CliWrap --version 3.6.0 | tee -a $logfullpath ../../cache/build.txt >/dev/null
+        dotnet add package CliWrap --version 3.6.0 | tee -a "$logfullpath" ../../cache/build.txt >/dev/null
         cd ../..
 
         cd source/StaticAnalysisTesterProj
-        dotnet add package CliWrap --version 3.6.0 | tee -a $logfullpath ../../cache/build.txt >/dev/null
+        dotnet add package CliWrap --version 3.6.0 | tee -a "$logfullpath" ../../cache/build.txt >/dev/null
         cd ../..
         logDebug "c# Dependencies installed"
 
         logInfo "Installing c# line coverage package"
         cd UnitTest/
-        dotnet add package coverlet.msbuild | tee -a $logfullpath ../cache/build.txt >/dev/null
+        dotnet add package coverlet.msbuild | tee -a "$logfullpath" ../cache/build.txt >/dev/null
         cd ../
 
         logInfo "4 Dependencies installed"
@@ -219,12 +219,12 @@ case "$1" in
     *)
         # code for running parse with URL argument
 
-        logInfo "Running parse with FILE URI: $1"
+        logInfo "Running parse with FILE URI: "$1""
 
         #copy input file to cache
-        cp $1 cache/input.txt
+        cp "$1" cache/input.txt
 
-        ./CLIParse $1 $logfullpath $loglevel $ghtoken
+        ./CLIParse "$1" "$logfullpath" $loglevel $ghtoken
         exit 0
         ;;
 
