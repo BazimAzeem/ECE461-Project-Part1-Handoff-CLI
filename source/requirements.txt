@@ -1,3 +1,4 @@
 pathlib
 GitPython==3.1.30
 coverage
+requests
