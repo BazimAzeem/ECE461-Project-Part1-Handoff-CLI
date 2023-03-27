@@ -164,7 +164,7 @@ case "$1" in
         cp TestResults/**/*.xml .
         cd ..
         
-        python3 source/pyscripts/line_coverage.py $LOG_FILE $LOG_LEVEL $GITHUB_TOKEN
+        python3 source/pyscripts/line_coverage.py $logfullpath $loglevel $ghtoken
 
         
 
